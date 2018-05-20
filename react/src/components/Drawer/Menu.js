@@ -4,6 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import MenuIcon from "@material-ui/icons/Menu";
+import { withRouter } from "react-router";
+import { isFinite } from "lodash";
 
 import DrawerMenuContent from "./MenuContent";
 
@@ -19,9 +21,42 @@ const styles = theme => ({
 });
 
 class DrawerMenu extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = DrawerMenu.getDerivedStateFromProps(props); // initialised with getDerivedStateFromProps
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      !prevState ||
+      (nextProps.match.restaurantId &&
+        nextProps.match.restaurantId !== prevState.restaurantId)
+    )
+      return {
+        restaurantId: parseInt(nextProps.match.params.restaurantId) || ""
+      };
+    else return prevState;
+  }
+
+  handleRestaurantChange = event => {
+    const restaurantId = event.target.value;
+    if (isFinite(restaurantId)) {
+      this.setState({ restaurantId });
+      if (parseInt(this.props.match.params.restaurantId)) {
+        this.props.history.push(
+          this.props.match.path.replace(":restaurantId", restaurantId)
+        );
+      }
+    } else {
+      this.setState({ restaurantId: "" });
+      if (parseInt(this.props.match.params.restaurantId)) {
+        this.props.history.push("/");
+      }
+    }
+  };
+
   render() {
     const { mobileOpen, classes, theme, handleDrawerToggle } = this.props;
-
     return (
       <React.Fragment>
         <Hidden mdUp>
@@ -37,7 +72,10 @@ class DrawerMenu extends React.Component {
               keepMounted: true // Better open performance on mobile.
             }}
           >
-            <DrawerMenuContent />
+            <DrawerMenuContent
+              restaurantId={this.state.restaurantId}
+              handleRestaurantChange={this.handleRestaurantChange}
+            />
           </Drawer>
         </Hidden>
         <Hidden smDown implementation="css">
@@ -48,7 +86,10 @@ class DrawerMenu extends React.Component {
               paper: classes.drawerPaper
             }}
           >
-            <DrawerMenuContent />
+            <DrawerMenuContent
+              restaurantId={this.state.restaurantId}
+              handleRestaurantChange={this.handleRestaurantChange}
+            />
           </Drawer>
         </Hidden>
       </React.Fragment>
@@ -63,4 +104,4 @@ DrawerMenu.propTypes = {
   handleDrawerToggle: PropTypes.func.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(DrawerMenu);
+export default withRouter(withStyles(styles, { withTheme: true })(DrawerMenu));

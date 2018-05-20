@@ -6,6 +6,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import InboxIcon from "@material-ui/icons/Inbox";
+import { isFinite } from "lodash";
+import RestaurantSelect from "../RestaurantSelect";
 
 import MenuLink from "./MenuLink";
 
@@ -13,9 +15,11 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar
 });
 
-const restaurantId = 3; // TODO
-
-const DrawerMenuContent = ({ classes }) => (
+const DrawerMenuContent = ({
+  classes,
+  restaurantId,
+  handleRestaurantChange
+}) => (
   <React.Fragment>
     <div className={classes.toolbar} />
     <Divider />
@@ -24,24 +28,35 @@ const DrawerMenuContent = ({ classes }) => (
       <MenuLink to="/restaurant-manager" title="Restaurant Manager" />
     </List>
     <Divider />
-    {/* Select */}
+    <RestaurantSelect
+      value={restaurantId}
+      handleChange={handleRestaurantChange}
+    />
     <Divider />
-    <List component="nav">
-      <MenuLink
-        to={`/${restaurantId}/restaurant-overview`}
-        title="Restaurant Overview"
-      />
-      <MenuLink
-        to={`/${restaurantId}/attendance-manager`}
-        title="Attendance Manager"
-      />
-      <MenuLink to={`/${restaurantId}/period-manager`} title="Period Manager" />
-    </List>
+    {isFinite(restaurantId) && (
+      <List component="nav">
+        <MenuLink
+          to={`/${restaurantId}/restaurant-overview`}
+          title="Restaurant Overview"
+        />
+        <MenuLink
+          to={`/${restaurantId}/attendance-manager`}
+          title="Attendance Manager"
+        />
+        <MenuLink
+          to={`/${restaurantId}/period-manager`}
+          title="Period Manager"
+        />
+      </List>
+    )}
   </React.Fragment>
 );
 
 DrawerMenuContent.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  restaurantId: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([""])])
+    .isRequired,
+  handleRestaurantChange: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(DrawerMenuContent);
