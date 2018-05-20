@@ -1,34 +1,40 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const path = require("path");
 
 module.exports = {
-  entry: [
-    'react-hot-loader/patch',
-    './src/index.js'
-  ],
+  entry: ["react-hot-loader/patch", "./src/index.js"],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ["babel-loader"]
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
+    filename: "bundle.js"
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Tomorrows Attendance'
+      title: "Tomorrows Attendance"
     }),
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    contentBase: './dist',
-    hot: true
+    hot: true,
+    inline: true,
+    historyApiFallback: true,
+    overlay: {
+      warnings: true,
+      errors: true
+    }
   }
 };
