@@ -10,26 +10,40 @@ import NotFound from "../screens/NotFound";
 
 import Layout from "./Layout";
 
+const RouteWithLayout = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={matchProps => (
+      <Layout>
+        <Component {...matchProps} />
+      </Layout>
+    )}
+  />
+);
 const App = () => (
   <Router>
-    <Layout>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/restaurant-manager" component={RestaurantManager} />
+    <Switch>
+      <RouteWithLayout path="/" exact component={Home} />
+      <RouteWithLayout
+        path="/restaurant-manager"
+        component={RestaurantManager}
+      />
 
-        <Route
-          path="/:restaurantId/restaurant-overview"
-          component={RestaurantOverview}
-        />
-        <Route
-          path="/:restaurantId/attendance-manager"
-          component={AttendanceManager}
-        />
-        <Route path="/:restaurantId/period-manager" component={PeriodManager} />
+      <RouteWithLayout
+        path="/:restaurantId/restaurant-overview"
+        component={RestaurantOverview}
+      />
+      <RouteWithLayout
+        path="/:restaurantId/attendance-manager"
+        component={AttendanceManager}
+      />
+      <RouteWithLayout
+        path="/:restaurantId/period-manager"
+        component={PeriodManager}
+      />
 
-        <Route path="*" component={NotFound} />
-      </Switch>
-    </Layout>
+      <RouteWithLayout path="*" component={NotFound} />
+    </Switch>
   </Router>
 );
 
