@@ -6,7 +6,6 @@ from database import db_session, Base, engine
 app = Flask(__name__)
 app.debug = True
 
-
 app.add_url_rule(
     '/graphql/restaurants',
     view_func=GraphQLView.as_view(
@@ -27,10 +26,16 @@ def index():
     return "Go to /graphql"
 
 
-@app.route('/create-table')
-def hello_world():
+@app.route('/create-tables')
+def create_table():
     Base.metadata.create_all(bind=engine)
     return 'Database tables created, hopefully'
+
+
+@app.route('/drop-tables')
+def drop_table():
+    Base.metadata.drop_all(bind=engine)
+    return 'Database tables dropped, hopefully'
 
 
 if __name__ == '__main__':
