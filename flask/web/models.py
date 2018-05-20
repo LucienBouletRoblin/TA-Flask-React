@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, Text
 from database import Base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, backref
@@ -21,3 +21,11 @@ class Employee(Base):
         backref=backref('employees',
                         uselist=True,
                         cascade='delete,all'))
+
+
+class Restaurant(Base):
+    __tablename__ = 'restaurants'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text)
+    email = Column(Text)
+    address = Column(String(255))

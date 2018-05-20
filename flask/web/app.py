@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 from schema import schema
+from restaurants_schema import restaurants_schema
 from models import Department, Employee
 from database import db_session, Base, engine
 
@@ -12,6 +13,16 @@ app.add_url_rule(
     view_func=GraphQLView.as_view(
         'graphql',
         schema=schema,
+        graphiql=True,
+        context={'session': db_session}  # for having the GraphiQL interface
+    )
+)
+
+app.add_url_rule(
+    '/graphql/restaurants',
+    view_func=GraphQLView.as_view(
+        'graphql_restaurant',
+        schema=restaurants_schema,
         graphiql=True  # for having the GraphiQL interface
     )
 )
@@ -22,9 +33,9 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-@app.route("/")
-def hello():
-    return "Hello World!"
+@app.route('/')
+def index():
+    return "Go to /graphql"
 
 
 @app.route('/create-data')
