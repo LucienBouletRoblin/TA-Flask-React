@@ -1,8 +1,11 @@
-FROM ubuntu:16.04
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-COPY . /app
-WORKDIR /app
+FROM python:alpine
+
+EXPOSE 5000
+
+WORKDIR app
+
+COPY ./web /app/
+
 RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+
+CMD python app.py

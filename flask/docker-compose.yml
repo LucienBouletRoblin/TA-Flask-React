@@ -1,8 +1,6 @@
 version: '3.3'
 services:
   ta-flask:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      ports:
-        - 5000:5000
+    build: .
+    ports: ['5000:5000']
+    volumes: ['./web:/app']
