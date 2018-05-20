@@ -1,22 +1,11 @@
 from flask import Flask
 from flask_graphql import GraphQLView
-from schema import schema
-from restaurants_schema import restaurants_schema
-from models import Department, Employee
+from schema.restaurants_schema import restaurants_schema
 from database import db_session, Base, engine
 
 app = Flask(__name__)
 app.debug = True
 
-app.add_url_rule(
-    '/graphql',
-    view_func=GraphQLView.as_view(
-        'graphql',
-        schema=schema,
-        graphiql=True,
-        context={'session': db_session}  # for having the GraphiQL interface
-    )
-)
 
 app.add_url_rule(
     '/graphql/restaurants',
@@ -38,23 +27,10 @@ def index():
     return "Go to /graphql"
 
 
-@app.route('/create-data')
+@app.route('/create-table')
 def hello_world():
     Base.metadata.create_all(bind=engine)
-    engineering = Department(name='Engineering')
-    db_session.add(engineering)
-    hr = Department(name='Human Resources')
-    db_session.add(hr)
-
-    peter = Employee(name='Peter', department=engineering)
-    db_session.add(peter)
-    roy = Employee(name='Roy', department=engineering)
-    db_session.add(roy)
-    tracy = Employee(name='Tracy', department=hr)
-    db_session.add(tracy)
-    db_session.commit()
-
-    return 'Data created, hopefully'
+    return 'Database tables created, hopefully'
 
 
 if __name__ == '__main__':
