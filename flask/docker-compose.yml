@@ -2,5 +2,31 @@ version: '3.3'
 services:
   ta-flask:
     build: .
+    container_name: ta-flask
     ports: ['5000:5000']
     volumes: ['./web:/app']
+    networks: [ta-network]
+    environment:
+      - POSTGRES_DB=flask
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+
+  ta-db:
+    image: postgres:10.4
+    container_name: ta-db
+    environment:
+      - POSTGRES_DB=flask
+      - POSTGRES_USER=flask
+      - POSTGRES_PASSWORD=flask
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks: [ta-network]
+
+  ta-db-admin:
+    image: adminer
+    container_name: ta-db-admin
+    networks: [ta-network]
+    ports: ['18080:8080']
+
+networks:
+  ta-network:
+    driver: bridge
