@@ -8,6 +8,7 @@ from database import db_session
 class Restaurants(SQLAlchemyObjectType):
     class Meta:
         model = RestaurantModel
+        interfaces = (graphene.Node,)
 
 
 # mutation {
@@ -105,4 +106,4 @@ class MyMutations(graphene.ObjectType):
     change_name = ChangeName.Field()
 
 
-restaurants_schema = graphene.Schema(query=Query, mutation=MyMutations, types=[Restaurants])
+restaurants_schema = graphene.Schema(query=Query, mutation=MyMutations)

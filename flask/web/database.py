@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 import os, sys
+import datetime
 
 try:
     POSTGRES_DB = os.environ['POSTGRES_DB']
@@ -22,3 +23,41 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 # We will need this for querying
 Base.query = db_session.query_property()
+
+
+def init_db():
+    from models.restaurant import User, Restaurant, ServingPeriod, AttendancePerPeriod
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+
+    # Create the fixtures
+    user_1 = User(last_name='aze', first_name="aze", email="aze@aze.aze")
+    db_session.add(user_1)
+    user_2 = User(last_name='aze2', first_name="aze2", email="aze2@aze.aze")
+    db_session.add(user_2)
+    db_session.commit()
+
+    restaurant_1 = Restaurant(name="restaurant1", email='restaurant@email.com', address="test1 address",
+                              user_id=user_1.id)
+    db_session.add(restaurant_1)
+    restaurant_2 = Restaurant(name="restaurant2", email='restaurant2@email.com', address="test2 address",
+                              user_id=user_1.id)
+    db_session.add(restaurant_2)
+    restaurant_3 = Restaurant(name="restaurant3", email='restaurant3@email.com', address="test3 address",
+                              user_id=user_2.id)
+    db_session.add(restaurant_3)
+    db_session.commit()
+
+    serving_period_1 = ServingPeriod(name="period1", restaurant_id=restaurant_1.id, start=datetime.time(12, 00, 00, 0),
+                                     end=datetime.time(15, 00, 00, 0))
+    db_session.add(serving_period_1)
+
+    serving_period_2 = ServingPeriod(name="period2", restaurant_id=restaurant_1.id, start=datetime.time(19, 00, 00, 0),
+                                     end=datetime.time(23, 00, 00, 0))
+    db_session.add(serving_period_2)
+    db_session.commit()
+
+    attendance_1 = AttendancePerPeriod(customer=50, date=datetime.date(2018, 2, 2), comment="good day",
+                                       serving_period_id=serving_period_2.id)
+    db_session.add(attendance_1)
+    db_session.commit()

@@ -9,16 +9,15 @@ from database import Base
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    name = Column(Text)
+    last_name = Column(Text)
     first_name = Column(Text)
-    password = Column(String)
     email = Column(Text)
 
     restaurants = relationship('Restaurant')
 
     @hybrid_property
     def display_name(self):
-        return self.first_name + ' ' + self.name
+        return self.first_name + ' ' + self.last_name
 
 
 class Restaurant(Base):
@@ -37,6 +36,7 @@ class ServingPeriod(Base):
     id = Column(Integer, primary_key=True)
     start = Column(Time)
     end = Column(Time)
+    name = Column(String)
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
 
     attendance_per_period = relationship('AttendancePerPeriod')
@@ -47,4 +47,6 @@ class AttendancePerPeriod(Base):
     id = Column(Integer, primary_key=True)
     customer = Column(Integer)
     date = Column(Date)
+    comment = Column(String)
     serving_period_id = Column(Integer, ForeignKey('servingPeriod.id'))
+
