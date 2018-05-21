@@ -6,8 +6,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
+import { Query } from "react-apollo";
 import DrawerMenu, { drawerWidth } from "./Drawer/Menu";
+import gql from "graphql-tag";
 
 const styles = theme => ({
   root: {
@@ -39,6 +40,11 @@ const styles = theme => ({
   }
 });
 
+const GET_CURRENT_RESTAURANT_ID = gql`
+  {
+    currentRestaurantId @client
+  }
+`;
 class Layout extends React.Component {
   state = {
     mobileOpen: false
@@ -63,7 +69,11 @@ class Layout extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Tomorrows Attendance
+              <Query query={GET_CURRENT_RESTAURANT_ID}>
+                {({ data: { currentRestaurantId } }) =>
+                  `Tomorrows Attendance | ${currentRestaurantId}`
+                }
+              </Query>
             </Typography>
           </Toolbar>
         </AppBar>

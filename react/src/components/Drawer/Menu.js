@@ -5,9 +5,9 @@ import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import MenuIcon from "@material-ui/icons/Menu";
 import { withRouter } from "react-router";
-import { isFinite } from "lodash";
-
+import { ApolloConsumer, Mutation } from "react-apollo";
 import DrawerMenuContent from "./MenuContent";
+import gql from "graphql-tag";
 
 export const drawerWidth = 240;
 
@@ -33,23 +33,26 @@ class DrawerMenu extends React.Component {
         nextProps.match.restaurantId !== prevState.restaurantId)
     )
       return {
-        restaurantId: parseInt(nextProps.match.params.restaurantId) || ""
+        restaurantId: nextProps.match.params.restaurantId || ""
       };
-    else return prevState;
+
+    return prevState;
   }
 
   handleRestaurantChange = event => {
     const restaurantId = event.target.value;
-    if (isFinite(restaurantId)) {
-      this.setState({ restaurantId });
-      if (parseInt(this.props.match.params.restaurantId)) {
+    // To test mutation and cache direct write, only one is necessary
+    this.setState({ restaurantId });
+    /*this.props.apolloCache.writeData({
+      data: { currentRestaurantId: restaurantId }
+    });*/
+    this.props.setCurrentRestaurantId({ variables: { id: restaurantId } });
+    if (this.props.match.params.restaurantId) {
+      if (restaurantId) {
         this.props.history.push(
           this.props.match.path.replace(":restaurantId", restaurantId)
         );
-      }
-    } else {
-      this.setState({ restaurantId: "" });
-      if (parseInt(this.props.match.params.restaurantId)) {
+      } else {
         this.props.history.push("/");
       }
     }
@@ -104,4 +107,28 @@ DrawerMenu.propTypes = {
   handleDrawerToggle: PropTypes.func.isRequired
 };
 
-export default withRouter(withStyles(styles, { withTheme: true })(DrawerMenu));
+const SET_CURRENT_RESTAURANT_ID = gql`
+  mutation SetCurrentRestaurantId($id: String) {
+    setCurrentRestaurantId(id: $id) @client
+  }
+`;
+
+// To test mutation and cache direct write, only one is necessary
+const withApolloCache = Component => props => (
+  <ApolloConsumer>
+    {cache => (
+      <Mutation mutation={SET_CURRENT_RESTAURANT_ID}>
+        {setCurrentRestaurantId => (
+          <Component
+            {...props}
+            apolloCache={cache}
+            setCurrentRestaurantId={setCurrentRestaurantId}
+          />
+        )}
+      </Mutation>
+    )}
+  </ApolloConsumer>
+);
+export default withRouter(
+  withApolloCache(withStyles(styles, { withTheme: true })(DrawerMenu))
+);

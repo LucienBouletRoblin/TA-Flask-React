@@ -6,7 +6,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import InboxIcon from "@material-ui/icons/Inbox";
-import { isFinite } from "lodash";
 import RestaurantSelect from "../RestaurantSelect";
 
 import MenuLink from "./MenuLink";
@@ -33,7 +32,7 @@ const DrawerMenuContent = ({
       handleChange={handleRestaurantChange}
     />
     <Divider />
-    {isFinite(restaurantId) && (
+    {restaurantId && (
       <List component="nav">
         <MenuLink
           to={`/${restaurantId}/restaurant-overview`}
@@ -54,8 +53,7 @@ const DrawerMenuContent = ({
 
 DrawerMenuContent.propTypes = {
   classes: PropTypes.object.isRequired,
-  restaurantId: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([""])])
-    .isRequired,
+  restaurantId: PropTypes.string.isRequired,
   handleRestaurantChange: PropTypes.func.isRequired
 };
 

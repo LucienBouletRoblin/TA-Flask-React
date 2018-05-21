@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import normalize from "normalize.css";
+import { ApolloProvider } from "react-apollo";
 
+import apolloClient from "./apollo/client";
 import App from "./components/App";
 
 // In the default template, body is empty. We must
@@ -12,6 +14,11 @@ if (!document.getElementById("app")) {
   document.body.appendChild(divElem);
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const Root = () => (
+  <ApolloProvider client={apolloClient}>
+    <App />
+  </ApolloProvider>
+);
+ReactDOM.render(<Root />, document.getElementById("app"));
 
 module.hot.accept();

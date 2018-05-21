@@ -6,10 +6,25 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import { withStyles } from "@material-ui/core/styles";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const styles = {
   root: { margin: "0.25em 1em" }
 };
+
+const GET_RESTAURANTS = gql`
+  {
+    allRestaurants {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
 
 const restoList = [
   {
@@ -23,16 +38,24 @@ const restoList = [
 ];
 
 const RestaurantSelect = ({ classes, value, handleChange }) => (
-  <Select className={classes.root} value={value} onChange={handleChange}>
-    <MenuItem value="">
-      <em>None</em>
-    </MenuItem>
-    {restoList.map(({ id, name }) => (
-      <MenuItem key={id} value={id}>
-        {name}
-      </MenuItem>
-    ))}
-  </Select>
+  <Query query={GET_RESTAURANTS}>
+    {({ loading, error, data }) => (
+      <Select className={classes.root} value={value} onChange={handleChange}>
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        {loading || error ? (
+          <MenuItem value="">{error ? error.message : "Loading"}</MenuItem>
+        ) : (
+          data.allRestaurants.edges.map(({ node: { id, name } }) => (
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
+          ))
+        )}
+      </Select>
+    )}
+  </Query>
 );
 
 export default withStyles(styles)(RestaurantSelect);
