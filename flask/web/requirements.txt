@@ -3,3 +3,4 @@ graphene_sqlalchemy==2.0.0
 Flask==1.0.2
 Flask-GraphQL==1.4.1
 psycopg2==2.7.3
+flask-cors==3.4.0
