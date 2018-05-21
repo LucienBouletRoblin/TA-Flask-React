@@ -1,5 +1,7 @@
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
+
+from database import db_session
 from models.restaurant import Restaurant as RestaurantModel
 
 
@@ -19,3 +21,25 @@ class Query(graphene.ObjectType):
     def resolve_restaurants(self, info):
         query = Restaurant.get_query(info)  # SQLAlchemy query
         return query.all()
+
+
+class CreateRestaurant(graphene.Mutation):
+    class Arguments:
+        name = graphene.String()
+        address = graphene.String()
+        email = graphene.String()
+        user_id = graphene.Int()
+
+    ok = graphene.Boolean()
+    restaurant = graphene.Field(lambda: Restaurant)
+
+    def mutate(self, info, name, address, email, user_id):
+        restaurant = RestaurantModel(name=name, address=address, email=email, user_id=user_id)
+        db_session.add(restaurant)
+        db_session.commit()
+        ok = True
+        return CreateRestaurant(restaurant=restaurant, ok=ok)
+
+
+class RestaurantMutations(graphene.ObjectType):
+    create_restaurant = CreateRestaurant.Field()
