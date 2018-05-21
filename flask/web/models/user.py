@@ -12,7 +12,7 @@ class User(Base):
     first_name = Column(Text)
     email = Column(Text)
 
-    restaurants = relationship('Restaurant')
+    restaurant = relationship('Restaurant')
 
     @hybrid_property
     def display_name(self):

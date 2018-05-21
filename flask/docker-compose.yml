@@ -20,6 +20,8 @@ services:
       - POSTGRES_PASSWORD=flask
       - PGDATA=/var/lib/postgresql/data/pgdata
     networks: [ta-network]
+    volumes:
+      - ta-db-data:/var/lib/postgresql/data
 
   ta-db-admin:
     image: adminer
@@ -30,3 +32,6 @@ services:
 networks:
   ta-network:
     driver: bridge
+
+volumes:
+  ta-db-data:
