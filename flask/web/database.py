@@ -26,11 +26,14 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from models.restaurant import User, Restaurant, ServingPeriod, AttendancePerPeriod
+    from models.user import User
+    from models.restaurant import Restaurant
+    from models.serving_period import ServingPeriod
+    from models.attendance_per_period import AttendancePerPeriod
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
-    # Create the fixtures
+    # Create the fixtures for testing purpose:
     user_1 = User(last_name='aze', first_name="aze", email="aze@aze.aze")
     db_session.add(user_1)
     user_2 = User(last_name='aze2', first_name="aze2", email="aze2@aze.aze")

@@ -1,8 +1,8 @@
 import graphene
-from graphene import relay
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
-from models.restaurant import Restaurant as RestaurantModel
+
 from database import db_session
+from models.restaurant import Restaurant as RestaurantModel
 
 
 class Restaurants(SQLAlchemyObjectType):
@@ -101,9 +101,7 @@ class Query(graphene.ObjectType):
         return query.filter(RestaurantModel.name == name).first()
 
 
-class MyMutations(graphene.ObjectType):
+class Mutations(graphene.ObjectType):
     create_restaurant = CreateRestaurant.Field()
     change_name = ChangeName.Field()
 
-
-restaurants_schema = graphene.Schema(query=Query, mutation=MyMutations)

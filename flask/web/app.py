@@ -1,29 +1,22 @@
 from flask import Flask
-from flask_graphql import GraphQLView
-from schema.restaurants_schema import restaurants_schema
-from schema.user_schema import users_schema
-from database import db_session, Base, engine, init_db
 from flask_cors import CORS
+from flask_graphql import GraphQLView
+
+from database import db_session, init_db
 
 app = Flask(__name__)
 CORS(app)
 app.debug = True
+init_db()
+
+from general_schema import schema
 
 app.add_url_rule(
-    '/graphql/users',
+    '/graphql',
     view_func=GraphQLView.as_view(
         'graphql_user',
-        schema=users_schema,
-        graphiql=True  # for having the GraphiQL interface
-    )
-)
-
-app.add_url_rule(
-    '/graphql/restaurants',
-    view_func=GraphQLView.as_view(
-        'graphql_restaurant',
-        schema=restaurants_schema,
-        graphiql=True  # for having the GraphiQL interface
+        schema=schema,
+        graphiql=True
     )
 )
 
@@ -39,5 +32,4 @@ def index():
 
 
 if __name__ == '__main__':
-    init_db()
     app.run(host='0.0.0.0')

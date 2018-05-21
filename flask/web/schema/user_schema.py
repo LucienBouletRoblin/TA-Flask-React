@@ -1,6 +1,6 @@
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
-from models.restaurant import User as UserModel
+from models.user import User as UserModel
 
 
 class User(SQLAlchemyObjectType):
@@ -19,6 +19,3 @@ class Query(graphene.ObjectType):
     def resolve_users(self, info):
         query = User.get_query(info)  # SQLAlchemy query
         return query.all()
-
-
-users_schema = graphene.Schema(query=Query)
