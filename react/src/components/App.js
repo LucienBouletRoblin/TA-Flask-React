@@ -10,6 +10,10 @@ import NotFound from "../screens/NotFound";
 
 import Layout from "./Layout";
 
+// To initialise the currentRestaurantId in apollo clientState from window.location.pathname
+export const pathsWithRestaurantId =
+  "/:restaurantId/(restaurant-overview|attendance-manager|period-manager)";
+
 const RouteWithLayout = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
