@@ -34,9 +34,9 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
     # Create the fixtures for testing purpose:
-    user_1 = User(last_name='aze', first_name="aze", email="aze@aze.aze")
+    user_1 = User(last_name='aze', first_name="aze", email="aze@aze.aze", username="user1", password=User.generate_hash("user1"))
     db_session.add(user_1)
-    user_2 = User(last_name='aze2', first_name="aze2", email="aze2@aze.aze")
+    user_2 = User(last_name='aze2', first_name="aze2", email="aze2@aze.aze", username="user2", password=User.generate_hash("user2"))
     db_session.add(user_2)
     db_session.commit()
 

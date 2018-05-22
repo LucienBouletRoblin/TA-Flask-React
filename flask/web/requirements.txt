@@ -4,3 +4,6 @@ Flask==1.0.2
 Flask-GraphQL==1.4.1
 psycopg2==2.7.3
 flask-cors==3.0.4
+Flask-JWT-Extended==3.9.1
+Flask-RESTful==0.3.6
+passlib==1.7.1
