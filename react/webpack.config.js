@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 const webpack = require("webpack");
 const path = require("path");
 
@@ -26,6 +27,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Tomorrows Attendance"
     }),
+    new Dotenv(),
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {

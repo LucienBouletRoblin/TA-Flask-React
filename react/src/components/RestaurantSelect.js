@@ -15,13 +15,9 @@ const styles = {
 
 const GET_RESTAURANTS = gql`
   {
-    allRestaurants {
-      edges {
-        node {
-          id
-          name
-        }
-      }
+    restaurants {
+      id
+      name
     }
   }
 `;
@@ -47,12 +43,12 @@ const RestaurantSelect = ({ classes, value, handleChange }) => (
         {loading || error ? (
           <MenuItem value="">{error ? error.message : "Loading"}</MenuItem>
         ) : (
-          data.allRestaurants.edges.map(({ node: { id, name } }) => (
-            <MenuItem key={id} value={id}>
-              {name}
-            </MenuItem>
-          ))
-        )}
+            data.restaurants.map(({ id, name }) => (
+              <MenuItem key={id} value={id}>
+                {name}
+              </MenuItem>
+            ))
+          )}
       </Select>
     )}
   </Query>
