@@ -43,12 +43,12 @@ const RestaurantSelect = ({ classes, value, handleChange }) => (
         {loading || error ? (
           <MenuItem value="">{error ? error.message : "Loading"}</MenuItem>
         ) : (
-            data.restaurants.map(({ id, name }) => (
-              <MenuItem key={id} value={id}>
-                {name}
-              </MenuItem>
-            ))
-          )}
+          data.restaurants.map(({ id, name }) => (
+            <MenuItem key={id} value={id}>
+              {name}
+            </MenuItem>
+          ))
+        )}
       </Select>
     )}
   </Query>

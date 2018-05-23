@@ -10,15 +10,12 @@
     "build": "webpack --mode production",
     "lint": "node_modules/prettier/bin-prettier.js src/**/*.js",
     "precommit": "pretty-quick --staged",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "start":
+      "webpack-dev-server --config ./webpack.config.js --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "babel": {
-    "presets": [
-      "env",
-      "react",
-      "stage-2"
-    ]
+    "presets": ["env", "react", "stage-2"]
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
