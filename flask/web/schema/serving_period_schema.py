@@ -10,7 +10,7 @@ class ServingPeriod(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     serving_periods = graphene.List(ServingPeriod)
-    serving_period = graphene.Field(lambda: ServingPeriod, id=graphene.Int())
+    serving_period = graphene.Field(lambda: ServingPeriod, id=graphene.ID())
 
     def resolve_serving_period(self, context, id):
         query = ServingPeriod.get_query(context)

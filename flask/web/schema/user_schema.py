@@ -15,7 +15,7 @@ class User(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     users = graphene.List(User)
-    user = graphene.Field(lambda: User, id=graphene.Int())
+    user = graphene.Field(lambda: User, id=graphene.ID())
 
     def resolve_user(self, context, id):
         query = User.get_query(context)

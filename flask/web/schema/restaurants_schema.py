@@ -12,7 +12,7 @@ class Restaurant(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     restaurants = graphene.List(Restaurant)
-    restaurant = graphene.Field(lambda: Restaurant, id=graphene.Int())
+    restaurant = graphene.Field(lambda: Restaurant, id=graphene.ID())
 
     def resolve_restaurant(self, context, id):
         query = Restaurant.get_query(context)
@@ -28,11 +28,12 @@ class CreateRestaurant(graphene.Mutation):
         name = graphene.String()
         address = graphene.String()
         email = graphene.String()
-        user_id = graphene.Int()
+        user_id = graphene.ID()
 
     ok = graphene.Boolean()
     restaurant = graphene.Field(lambda: Restaurant)
 
+    # TODO Erreur si un ou plusieurs arguements sont manquants
     def mutate(self, info, name, address, email, user_id):
         restaurant = RestaurantModel(name=name, address=address, email=email, user_id=user_id)
         db_session.add(restaurant)

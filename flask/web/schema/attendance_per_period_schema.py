@@ -10,7 +10,7 @@ class AttendancePerPeriod(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     attendance_per_periods = graphene.List(AttendancePerPeriod)
-    attendance_per_period = graphene.Field(lambda: AttendancePerPeriod, id=graphene.Int())
+    attendance_per_period = graphene.Field(lambda: AttendancePerPeriod, id=graphene.ID())
 
     def resolve_attendance_per_period(self, context, id):
         query = AttendancePerPeriod.get_query(context)
