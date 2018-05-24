@@ -9,5 +9,5 @@ class AttendancePerPeriod(Base):
     id = Column(Integer, primary_key=True)
     customer = Column(Integer)
     date = Column(Date)
-    comment = Column(String)
+    comment = Column(String, nullable=True)
     serving_period_id = Column(Integer, ForeignKey('servingPeriod.id'))

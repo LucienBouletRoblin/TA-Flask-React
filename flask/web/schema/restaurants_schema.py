@@ -1,8 +1,12 @@
+import logging
+
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
 
 from database import db_session
 from models.restaurant import Restaurant as RestaurantModel
+
+log = logging.getLogger('custom_logger')
 
 
 class Restaurant(SQLAlchemyObjectType):
@@ -33,8 +37,7 @@ class CreateRestaurant(graphene.Mutation):
     ok = graphene.Boolean()
     restaurant = graphene.Field(lambda: Restaurant)
 
-    # TODO Erreur si un ou plusieurs arguements sont manquants
-    def mutate(self, info, name, address, email, user_id):
+    def mutate(self, info, name, user_id, address=None, email=None):
         restaurant = RestaurantModel(name=name, address=address, email=email, user_id=user_id)
         db_session.add(restaurant)
         db_session.commit()
@@ -42,5 +45,27 @@ class CreateRestaurant(graphene.Mutation):
         return CreateRestaurant(restaurant=restaurant, ok=ok)
 
 
+class UpdateRestaurant(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID()
+        name = graphene.String()
+        address = graphene.String()
+        email = graphene.String()
+        user_id = graphene.ID()
+
+    ok = graphene.Boolean()
+    restaurant = graphene.Field(lambda: Restaurant)
+
+    # TODO to test and add check if user_id of the restaurant the current logged user
+    def mutate(self, info, restaurant_id, name, user_id, address=None, email=None):
+        log.info(info)
+        restaurant = RestaurantModel.query.get(restaurant_id)
+        restaurant.name, restaurant.address, restaurant.email, restaurant.user_id = name, address, email, user_id
+        db_session.commit()
+        ok = True
+        return UpdateRestaurant(restaurant=restaurant, ok=ok)
+
+
 class RestaurantMutations(graphene.ObjectType):
     create_restaurant = CreateRestaurant.Field()
+    update_restaurant = UpdateRestaurant.Field()
