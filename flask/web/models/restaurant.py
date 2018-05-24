@@ -9,8 +9,8 @@ class Restaurant(Base):
     __tablename__ = 'restaurant'
     id = Column(Integer, primary_key=True)
     name = Column(Text)
-    email = Column(Text)
-    address = Column(String(255))
+    email = Column(Text, nullable=True)
+    address = Column(String(255), nullable=True)
     user_id = Column(Integer, ForeignKey('user.id'))
 
     serving_period = relationship('ServingPeriod')
