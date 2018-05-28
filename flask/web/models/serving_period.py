@@ -11,6 +11,6 @@ class ServingPeriod(Base):
     start = Column(Time)
     end = Column(Time)
     name = Column(String)
-    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
+    restaurant_id = Column(Integer, ForeignKey('restaurant.id'), nullable=True)
 
-    attendance_per_period = relationship('AttendancePerPeriod')
+    # attendance_per_period = relationship('AttendancePerPeriod')

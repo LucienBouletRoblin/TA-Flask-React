@@ -19,4 +19,3 @@ RUN chmod u+x /wait-for-postgresql.sh
 
 ENTRYPOINT ["sh", "/wait-for-postgresql.sh"]
 
-CMD ["python3", "app.py"]

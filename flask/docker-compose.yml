@@ -10,6 +10,7 @@ services:
       - POSTGRES_DB=flask
       - POSTGRES_USER=flask
       - POSTGRES_PASSWORD=flask
+    command: python3 app.py
 
   ta-db:
     image: postgres:10.4

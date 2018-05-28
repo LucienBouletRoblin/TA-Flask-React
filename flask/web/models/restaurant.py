@@ -13,4 +13,4 @@ class Restaurant(Base):
     address = Column(String(255), nullable=True)
     user_id = Column(Integer, ForeignKey('user.id'))
 
-    serving_period = relationship('ServingPeriod')
+    # serving_period = relationship('ServingPeriod')
