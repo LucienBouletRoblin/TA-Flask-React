@@ -13,7 +13,10 @@ def test_query(snapshot):
     query = '''
         query {
             restaurants {
-                name
+                name,
+                email,
+                address,
+                userId,
                 id
             }
         }
