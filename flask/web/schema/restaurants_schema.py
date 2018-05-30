@@ -47,7 +47,7 @@ class CreateRestaurant(graphene.Mutation):
 
 class UpdateRestaurant(graphene.Mutation):
     class Arguments:
-        id = graphene.ID()
+        restaurant_id = graphene.ID()
         name = graphene.String()
         address = graphene.String()
         email = graphene.String()
@@ -56,14 +56,14 @@ class UpdateRestaurant(graphene.Mutation):
     ok = graphene.Boolean()
     restaurant = graphene.Field(lambda: Restaurant)
 
-    # TODO to test and add check if user_id of the restaurant the current logged user
     def mutate(self, info, restaurant_id, name, user_id, address=None, email=None):
-        log.info(info)
         restaurant = RestaurantModel.query.get(restaurant_id)
-        restaurant.name, restaurant.address, restaurant.email, restaurant.user_id = name, address, email, user_id
-        db_session.commit()
-        ok = True
-        return UpdateRestaurant(restaurant=restaurant, ok=ok)
+        if restaurant.user_id == int(user_id):
+            restaurant.name, restaurant.address, restaurant.email = name, address, email
+            db_session.commit()
+            ok = True
+            return UpdateRestaurant(restaurant=restaurant, ok=ok)
+        return False
 
 
 class RestaurantMutations(graphene.ObjectType):

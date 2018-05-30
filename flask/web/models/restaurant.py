@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, Text, String
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from database import Base
+from models.user import User
 
 
 class Restaurant(Base):
@@ -11,6 +12,7 @@ class Restaurant(Base):
     name = Column(Text)
     email = Column(Text, nullable=True)
     address = Column(String(255), nullable=True)
-    user_id = Column(Integer, ForeignKey('user.id'),nullable=False)
-
-    # serving_period = relationship('ServingPeriod')
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    user = relationship(User, backref=backref('restaurants',
+                                              uselist=True,
+                                              cascade='delete,all'))
