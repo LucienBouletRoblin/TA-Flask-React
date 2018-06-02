@@ -2,6 +2,7 @@ import logging
 
 import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
+from graphql import GraphQLError
 
 from database import db_session
 from models.restaurant import Restaurant as RestaurantModel
@@ -58,12 +59,19 @@ class UpdateRestaurant(graphene.Mutation):
 
     def mutate(self, info, restaurant_id, name, user_id, address=None, email=None):
         restaurant = RestaurantModel.query.get(restaurant_id)
+        if len(name) <= 3:
+            raise GraphQLError('The name is too short')
         if restaurant.user_id == int(user_id):
+            user_restaurants = RestaurantModel.query.filter(RestaurantModel.user_id == user_id).all()
+            user_restaurants.remove(restaurant)
+            for restaurant in user_restaurants:
+                if restaurant.name == name:
+                    raise GraphQLError('That name is already used by one of the user restaurants')
             restaurant.name, restaurant.address, restaurant.email = name, address, email
             db_session.commit()
             ok = True
             return UpdateRestaurant(restaurant=restaurant, ok=ok)
-        return False
+        raise GraphQLError('Wrong user!')
 
 
 class RestaurantMutations(graphene.ObjectType):

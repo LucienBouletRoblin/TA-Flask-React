@@ -1,6 +1,9 @@
 import logging
+import uuid
+from pytest import raises
 
 from graphene.test import Client
+from graphql.error.located_error import GraphQLLocatedError, GraphQLError
 
 from general_schema import schema
 
@@ -99,10 +102,12 @@ def test_create_restaurant_with_minimal_args(snapshot):
     assert 'errors' not in query_result
     snapshot.assert_match(query_result)
 
+
 def test_update_restaurant_name(snapshot):
+    new_name = str(uuid.uuid4()).replace("-", "")
     query = '''
         mutation {
-            updateRestaurant(name:"updated name oh yes", restaurantId:"1", userId:"1") {
+            updateRestaurant(name:"%s", restaurantId:"1", userId:"1") {
                 ok
                 restaurant {
                     id
@@ -119,34 +124,32 @@ def test_update_restaurant_name(snapshot):
                 }
             }
         }
-    '''
+    ''' % new_name
     query_result = client.execute(query)
     assert 'errors' not in query_result
     snapshot.assert_match(query_result)
 
-def test_update_restaurant_name_with_wrong_user(snapshot):
-    query = '''
-        mutation {
-            updateRestaurant(name:"updated name oh yes", restaurantId:"1", userId:"1654654") {
-                ok
-                restaurant {
-                    id
-                    name
-                    email
-                    address
-                    userId
-                    user {
-                        lastName
-                        firstName
-                        email
-                    }
-                    __typename
-                }
-            }
-        }
-    '''
-    query_result = client.execute(query)
-    assert 'errors' not in query_result
-    assert query_result['data']['updateRestaurant']['ok'] is None
-    assert query_result['data']['updateRestaurant']['restaurant'] is None
-    snapshot.assert_match(query_result)
+
+# def test_update_restaurant_name_with_wrong_user():
+#     query = '''
+#         mutation {
+#             updateRestaurant(name:"lhglhghlg name oh yes", restaurantId:"1", userId:"1654654") {
+#                 ok
+#                 restaurant {
+#                     id
+#                     name
+#                     email
+#                     address
+#                     userId
+#                     user {
+#                         lastName
+#                         firstName
+#                         email
+#                     }
+#                     __typename
+#                 }
+#             }
+#         }
+#     '''
+#     with raises(GraphQLError):
+#         client.execute(query)

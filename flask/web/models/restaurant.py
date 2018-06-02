@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Text, String
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, validates
 
 from database import Base
 from models.user import User

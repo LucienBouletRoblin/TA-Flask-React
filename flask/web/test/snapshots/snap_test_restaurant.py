@@ -11,6 +11,13 @@ snapshots['test_get_restaurants 1'] = {
     'data': {
         'restaurants': [
             {
+                'address': 'test1 address',
+                'email': 'restaurant@email.com',
+                'id': '1',
+                'name': 'restaurant1',
+                'userId': 1
+            },
+            {
                 'address': 'test2 address',
                 'email': 'restaurant2@email.com',
                 'id': '2',
@@ -35,112 +42,7 @@ snapshots['test_get_restaurants 1'] = {
                 'address': None,
                 'email': None,
                 'id': '5',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '1',
-                'name': 'updated name oh yes',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '6',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '7',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '8',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '9',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '10',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '11',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '12',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '13',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '14',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '15',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '16',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '17',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': 'address test',
-                'email': 'email@email.email',
-                'id': '18',
-                'name': 'azeaze',
-                'userId': 1
-            },
-            {
-                'address': None,
-                'email': None,
-                'id': '19',
-                'name': 'azeaze',
+                'name': '0c66db2897cf44709b173a2ab03cc6b7',
                 'userId': 1
             }
         ]
@@ -151,10 +53,10 @@ snapshots['test_get_restaurant_by_id 1'] = {
     'data': {
         'restaurant': {
             '__typename': 'Restaurant',
-            'address': None,
-            'email': None,
+            'address': 'test1 address',
+            'email': 'restaurant@email.com',
             'id': '1',
-            'name': 'updated name oh yes',
+            'name': 'restaurant1',
             'user': {
                 'email': 'aze@aze.aze',
                 'firstName': 'aze',
@@ -193,7 +95,7 @@ snapshots['test_create_restaurant_with_minimal_args 1'] = {
                 '__typename': 'Restaurant',
                 'address': None,
                 'email': None,
-                'id': '21',
+                'id': '7',
                 'name': 'azeaze',
                 'user': {
                     'email': 'aze@aze.aze',
@@ -214,8 +116,8 @@ snapshots['test_update_restaurant_name 1'] = {
                 '__typename': 'Restaurant',
                 'address': None,
                 'email': None,
-                'id': '1',
-                'name': 'updated name oh yes',
+                'id': '7',
+                'name': '17b98f9c8d66452daac8a2ce02662eae',
                 'user': {
                     'email': 'aze@aze.aze',
                     'firstName': 'aze',
@@ -223,15 +125,6 @@ snapshots['test_update_restaurant_name 1'] = {
                 },
                 'userId': 1
             }
-        }
-    }
-}
-
-snapshots['test_update_restaurant_name_with_wrong_user 1'] = {
-    'data': {
-        'updateRestaurant': {
-            'ok': None,
-            'restaurant': None
         }
     }
 }
